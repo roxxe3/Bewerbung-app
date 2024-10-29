@@ -1,30 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Bulma!</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello Bulma!</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
   <section class="section">
     <div class="container">
       <h1 class="title">
-        Hello World
+        Hello Hamza
       </h1>
       <p class="subtitle">
-        My first website with <strong>Bulma</strong>!
+        Bewerbung <strong>App</strong>!
       </p>
-<!-- After -->
-    <form action="/submit" method="POST">
-        <input
-        class="input is-primary"
-        type="email"
-        name="email"
-        placeholder="type email"
-        />
-        <button type="submit">Submit</button>
-    </form>
+      <form class="box" action="/submit" method="POST">
+        <div class="field is-grouped">
+          <p class="control">
+            <div class="control has-icons-left has-icons-right">
+              <input class="input is-primary input is-rounded" type="email" name="email" placeholder="type email" style="width: 400px;" />
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope fa-xs"></i>
+              </span>
+            </div>
+          </p>
+          <p class="control">
+            <span class="select">
+              <select id="ausbildung" name="ausbildung" class="notranslate">
+                <option>Anwendungsentwicklung</option>
+                <option>Systemintegration</option>
+                <option>Daten- und Prozessanalyse</option>
+                <option>digitale Vernetzung</option>
+              </select>
+            </span>
+          </p>
+          <p class="control">
+            <button class="button is-primary" type="submit">Submit</button>
+          </p>
+        </div>
+      </form>
+    </div>
   </section>
-  </body>
+</body>
 </html>

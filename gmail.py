@@ -5,6 +5,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 # app.py
 from flask import Flask, request, render_template
+from data import Anwendungsentwicklung
 
 app = Flask(__name__)
 
@@ -42,25 +43,21 @@ def submit():
     # Capture the form data
 
     email = request.form.get('email')
+    ausbildung = request.form.get('ausbildung')
+    print(ausbildung)
     
     # You can now process the data, save it, or send it back
-    send_email_with_attachments(
-    smtp_server="smtp.gmail.com",
-    port=587,
-    sender_email="hamzafarissi@gmail.com",
-    receiver_email= email,
-    password="sawv qtvi fgvk cuza",
-    subject="Bewerbung Ausbildung Fachinformatikar Anwendungsentwicklung 2025",
-    body="""
-Sehr geehrte Damen und Herren,
-
-mit großer Begeisterung habe ich mich soeben auf eine Ausbildungsstelle als Fachinformatiker Anwendungsentwicklung für 2025 beworben. Anbei sende ich Ihnen noch mein Anschreiben und meinen Lebenslauf. Ich freue mich auf eine Rückmeldung von Ihnen.
-
-Mit freundlichen Grüßen,
-
-Hamza Farissi""",
-    file_paths=["lebenslauf.pdf"]
-    )
+    if ausbildung == "Anwendungsentwicklung":
+        send_email_with_attachments(
+        smtp_server="smtp.gmail.com",
+        port=587,
+        sender_email="hamzafarissi@gmail.com",
+        receiver_email= email,
+        password="sawv qtvi fgvk cuza",
+        subject=Anwendungsentwicklung["subject"],
+        body=Anwendungsentwicklung["body"],
+        file_paths=Anwendungsentwicklung["file_paths"]
+        )
     return f"Email - {email}"
 
 # Usage
