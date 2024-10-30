@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,11 +18,12 @@
       <p class="subtitle">
         Bewerbung <strong>App</strong>!
       </p>
-      <form class="box" action="/submit" method="POST">
+      <form id="ausbildungForm" class="box" action="/submit" method="POST">
         <div class="field is-grouped">
           <p class="control">
             <div class="control has-icons-left has-icons-right">
-              <input class="input is-primary input is-rounded" type="email" name="email" placeholder="type email" style="width: 400px;" />
+              <input class="input is-primary input is-rounded" type="email" name="email" id="email" placeholder="type email"
+                style="width: 400px;" required />
               <span class="icon is-small is-left">
                 <i class="fas fa-envelope fa-xs"></i>
               </span>
@@ -29,20 +31,87 @@
           </p>
           <p class="control">
             <span class="select">
-              <select id="ausbildung" name="ausbildung" class="notranslate">
+              <select id="ausbildung" name="ausbildung" class="notranslate" required>
+                <option value="">Select an option</option>
                 <option>Anwendungsentwicklung</option>
                 <option>Systemintegration</option>
                 <option>Daten- und Prozessanalyse</option>
                 <option>digitale Vernetzung</option>
+                <option>Mathematisch technischer Softwareentwickler</option>
               </select>
             </span>
           </p>
           <p class="control">
-            <button class="button is-primary" type="submit">Submit</button>
+            <button id="submitButton" class="button is-primary" type="submit">Submit</button>
           </p>
+          <div id="loadingSpinner" style="display: none;">
+            <button class="button is-primary is-loading" disabled>Loading...</button>
+          </div>
         </div>
       </form>
+      <div id="responseMessage" style="margin-top:20px;"></div>
+
+      <script>
+        function validateForm() {
+          const email = document.getElementById('email').value;
+          const ausbildung = document.getElementById('ausbildung').value;
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+
+          // Check email format
+          if (!emailPattern.test(email)) {
+            alert('Please enter a valid email address.');
+            return false; // Validation failed
+          }
+
+          // Check if an ausbildung option is selected
+          if (ausbildung === "") {
+            alert('Please select an Ausbildung option.');
+            return false; // Validation failed
+          }
+
+          return true; // Validation passed
+        }
+
+        document.getElementById('ausbildungForm').addEventListener('submit', async function (event) {
+          // Validate the form before submitting
+          if (!validateForm()) {
+            event.preventDefault(); // Prevent submission if validation fails
+            return;
+          }
+
+          event.preventDefault();  // Prevent default form submission
+
+          const submitButton = document.getElementById('submitButton');
+          submitButton.classList.add('is-loading');  // Show loading state
+          submitButton.disabled = true;  // Disable button to prevent multiple clicks
+
+          const formData = new FormData(this);
+
+          try {
+            const response = await fetch('/submit', {
+              method: 'POST',
+              body: formData
+            });
+            const data = await response.json();
+            const responseMessage = document.getElementById('responseMessage');
+
+            // Handle response
+            if (data.status === 'success') {
+              responseMessage.innerHTML = `<p style="color:green;">${data.message}</p>`;
+            } else {
+              responseMessage.innerHTML = `<p style="color:red;">${data.message}</p>`;
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('responseMessage').innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
+          } finally {
+            submitButton.classList.remove('is-loading');  // Hide loading state
+            submitButton.disabled = false;  // Re-enable button
+          }
+        });
+      </script>
     </div>
   </section>
 </body>
+
 </html>
