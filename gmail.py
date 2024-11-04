@@ -12,6 +12,7 @@ from data import (
     Mathematisch_technischer_Softwareentwickler
 )
 import os
+from quickstart import append_data
 
 app = Flask(__name__)
 app.config['password'] = os.getenv('password')
@@ -24,6 +25,8 @@ AUSBILDUNG_OPTIONS = {
     "digitale Vernetzung": Digitale_Vernetzung,
     "Mathematisch technischer Softwareentwickler": Mathematisch_technischer_Softwareentwickler
 }
+
+
 
 def send_email_with_attachments(smtp_server, port, sender_email, receiver_email, password, subject, body, file_paths):
     message = MIMEMultipart()
@@ -66,6 +69,7 @@ def submit():
             body=ausbildung_details["body"],
             file_paths=ausbildung_details["file_paths"]
         )
+        append_data(email)
         return jsonify({"status": "success", "message": f"Email sent to {email} for {ausbildung}"})
     else:
         return jsonify({"status": "error", "message": "Invalid ausbildung option"}), 400
