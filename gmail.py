@@ -69,7 +69,7 @@ def submit():
             body=ausbildung_details["body"],
             file_paths=ausbildung_details["file_paths"]
         )
-        append_data(email)
+        append_data(ausbildung, email)
         return jsonify({"status": "success", "message": f"Email sent to {email} for {ausbildung}"})
     else:
         return jsonify({"status": "error", "message": "Invalid ausbildung option"}), 400

@@ -35,15 +35,25 @@ def get_credentials():
             token.write(creds.to_json())
     return creds
 
+def parse_email(email):
+    name = ""
+    for i in range(len(email)):
+        if email[i] == "@":
+            name = email[i + 1: len(email)]
+            return name
 
-def append_data():
+
+
+
+def append_data(ausbildung, email):
     try:
         creds = get_credentials()
         service = build('sheets', 'v4', credentials=creds)
+        name = parse_email(email)
         
         body = {
             'values': [
-                ["test2", f'=TODAY()']
+                [ausbildung ,email, f'=TODAY()', name]
             ]
         }
         
@@ -68,5 +78,25 @@ def append_data():
 
 
 
+
+def clear_excess_data():
+    try:
+        creds = get_credentials()
+        service = build('sheets', 'v4', credentials=creds)
+        
+        # Clear from row 16 onward to reset any residual data
+        clear_range = "Job Tracker Spreadsheet!A16:Z"
+        
+        service.spreadsheets().values().clear(
+            spreadsheetId=SAMPLE_SPREADSHEET_ID,
+            range=clear_range
+        ).execute()
+        
+        print("Cleared excess data beyond row 16.")
+    except HttpError as err:
+        print(f"An error occurred: {err}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
 if __name__ == "__main__":
-    append_data()
+    print(parse_email("bewerbungen@destatis.de"))
